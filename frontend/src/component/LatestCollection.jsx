@@ -1,32 +1,34 @@
-import React, { useContext, useEffect, useState } from 'react'
-import Title from './Title'
-import { shopDataContext } from '../context/ShopContext'
-import Card from './Card'
+import { useEffect, useState } from "react";
+import api from "../utils/api";
 
 function LatestCollection() {
-    let {products} = useContext(shopDataContext)
-    let [latestProducts,setLatestProducts] = useState([])
+  const [products, setProducts] = useState([]);
 
-    useEffect(()=>{
-    setLatestProducts(products.slice(0,8));
-    },[products])
+  useEffect(() => {
+    api.get("/api/products")
+      .then((res) => {
+        setProducts(res.data);
+      })
+      .catch((err) => {
+        console.log("LatestCollection error:", err);
+      });
+  }, []);
 
   return (
-    <div>
-      <div className='h-[8%] w-[100%] text-center md:mt-[50px]  '>
-        <Title text1={"LATEST"} text2={"COLLECTIONS"}/>
-        <p className='w-[100%] m-auto text-[13px] md:text-[20px] px-[10px] text-blue-100 '>Step Into Style – New Collection Dropping This Season!</p>
-      </div>
-      <div className='w-[100%] h-[50%] mt-[30px] flex items-center justify-center flex-wrap gap-[50px]'>
-        {
-            latestProducts.map((item,index)=>(
-                <Card key={index} name={item.name} image={item.image1} id={item._id} price={item.price}/>
-            ))
-        }
-        
-        </div>
+    <div className="w-full flex flex-col items-center text-white">
+      <h2 className="text-2xl font-bold mb-4">Latest Collection</h2>
+
+      {products.length === 0 ? (
+        <p>No products found</p>
+      ) : (
+        products.map((item) => (
+          <div key={item._id} className="mb-2">
+            {item.name}
+          </div>
+        ))
+      )}
     </div>
-  )
+  );
 }
 
-export default LatestCollection
+export default LatestCollection;

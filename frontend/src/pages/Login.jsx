@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import React from 'react'
 import Logo from "../assets/logo.png"
 import { useNavigate } from 'react-router-dom'
@@ -9,7 +10,7 @@ import { useContext } from 'react';
 import { authDataContext } from '../context/authContext';
 import axios from 'axios';
 import { signInWithPopup } from 'firebase/auth';
-import { auth, provider } from '../../utils/Firebase';
+import { auth, provider } from "../utils/Firebase.js";
 import { userDataContext } from '../context/UserContext';
 import Loading from '../component/Loading';
 
